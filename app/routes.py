@@ -32,14 +32,16 @@ def index():
 
 @app.route('/<city>')
 def indexByCity(city):  
-    
+
     wea_dict = weatDictByCity(city)
-    return render_template("index.html",
-    city=wea_dict['name'],
-    image= "static/img/icons/{}.png".format(wea_dict['weather'][0]['icon']),
-    description=wea_dict['weather'][0]['description'],
-    temp=math.floor(wea_dict['main']['temp']-273)
-    )
+    if "name" in wea_dict and "weather" in wea_dict:
+        return render_template("index.html",
+        city=wea_dict['name'],
+        image= "static/img/icons/{}.png".format(wea_dict['weather'][0]['icon']),
+        description=wea_dict['weather'][0]['description'],
+        temp=math.floor(wea_dict['main']['temp']-273))
+    
+    return render_template("unknown.html")
     
 @app.route('/about')
 def about():
